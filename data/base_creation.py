@@ -101,6 +101,9 @@ class DataBase:
         res = self.cursor.fetchone()
         user_lits = loads(res[0])
 
+        if len(user_lits) < num_w:
+            return []
+
         winners = random.sample(user_lits, num_w)
 
         return winners

@@ -126,7 +126,7 @@ async def next7(call: CallbackQuery, state: FSMContext):
         await call.answer('Joined right now')
         
     elif check is False:
-        await call.answer('You joined man')
+        await call.answer('You have already joined!')
         print(f'Give id: {call.message.message_id}')
     elif check == 'full':
         await call.answer('Now it is full!!!')
