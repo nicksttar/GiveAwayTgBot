@@ -1,9 +1,10 @@
 from aiogram import Router, F 
-from aiogram.types import Message, CallbackQuery, FSInputFile, Update
+from aiogram.types import Message, CallbackQuery, FSInputFile
+from aiogram.exceptions import TelegramForbiddenError
 from utils.states import Form_classic
 from aiogram.fsm.context import FSMContext
 
-from bot_models.classic_kb import kb_generation, give_kb, rmk, kb
+from bot_models.classic_kb import kb_generation, give_kb, kb
 from config import default_text, wellcome_text
 from menu.mainkb import main_kb
 from data.base_creation import DataBase
@@ -81,8 +82,10 @@ Participants: {number_of}
 Winners: {number_wins}
 
 Description: {data["short_description"]}"""
-    
-    await bot.send_photo(chat_id=data['for_who'], photo=data['photo'], caption=text_info, reply_markup=give_kb())
+    try:
+        await bot.send_photo(chat_id=data['for_who'], photo=data['photo'], caption=text_info, reply_markup=give_kb())
+    except TelegramForbiddenError:
+        await message.answer('Bot is not in Your channel or have no administrator permission.\n\nAdd bot into Your channel and make him admin to send gives!')
     await state.clear()
 
 @router.message(F.text == 'Another give')
